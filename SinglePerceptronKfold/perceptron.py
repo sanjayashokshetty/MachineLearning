@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-data=pd.read_csv('IRIS.csv')
+data=pd.read_csv('SPECT.csv')
 X=data.drop(["class"],axis=1)
 Y=data["class"]
 data=np.array(data)
@@ -10,9 +10,9 @@ np.random.shuffle(data)
 n_features=len(data[0])-1
 n_data=len(data)
 
-
+#Iris-setosa
 for i in range(n_data):
-    if(data[i][n_features]=="Iris-setosa"):
+    if(data[i][n_features]=="Yes"):
         data[i][n_features]=1
     else:
         data[i][n_features]=0
@@ -22,6 +22,7 @@ thresold=0
 n_epochs=2
 learning_rate=0.3
 k_fold=10
+eps=0.001 #epsilon to avoid divide by zero
 weights=[1/(n_features+1) for i in range(n_features)]
 
 def function(row,weights,bias,thresold):
@@ -92,7 +93,15 @@ for i in range(n_epochs):
             cost=z-y
             test_TT,test_TF,test_FF,test_FT=valid(y,cost,test_TT,test_TF,test_FF,test_FT)
         print("trainTT:",train_TT," trainTF:",train_TF," trainFF:",train_FF," trainFT:",train_FT)
-        print("train_accuracy",(train_TT+train_FF)/(train_TT+train_TF+train_FF+train_FT))
+        print("train_accuracy",(train_TT+train_FF)/(train_TT+train_TF+train_FF+train_FT+eps))
+        print("train Precision +:",(train_TT)/(train_TT+train_FT+eps))
+        print("train Precision -:",(train_FF)/(train_FF+train_TF+eps))
+        print("train recall +:",(train_TT)/(train_TT+train_TF+eps))
+        print("train recall -:",(train_FF)/(train_FF+train_FT+eps))
         print("testTT:",test_TT," testTF:",test_TF," testFF:",test_FF," testFT:",test_FT)
-        print("test_accuracy",(test_TT+test_FF)/(test_TT+test_TF+test_FF+test_FT))
+        print("test_accuracy",(test_TT+test_FF)/(test_TT+test_TF+test_FF+test_FT+eps))
+        print("test Precision +:",(test_TT)/(test_TT+test_FT+eps))
+        print("test Precision -:",(test_FF)/(test_FF+test_TF+eps))
+        print("test recall +:",(test_TT)/(test_TT+test_TF+eps))
+        print("test recall -:",(test_FF)/(test_FF+test_FT+eps))
 
