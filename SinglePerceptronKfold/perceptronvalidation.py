@@ -58,60 +58,33 @@ def function(row,weights,bias,thresold):
     else:
         return 0
 
-def valid(z,cost,a,b,c,d):
-    if cost==0:
-        if z==1:
-            return a+1,b,c,d
-        else:
-            return a,b,c+1,d
-    else:
-        if z==0:
-            return a,b+1,c,d
-        else:
-            return a,b,c,d+1
-
 def update_weights(weights,row,thresold,bias,learning_rate,cost):
     for i in range(len(weights)):
         weights[i]+=learning_rate*cost*row[i]
     thresold=thresold-learning_rate*cost
     return weights,thresold,bias
 
-    
-for i in range(n_epochs):
-    print("epoch no",i+1,"+"*60)
+from valid import validation
+for epoch in range(n_epochs):
+    foldres=validation.foldwise()
     for j in range(k_fold):
-        print("fold no:",j)
+#         print("fold no:",j)
+        foldres.reset()
         x_train,y_train,x_test,y_test=kfolddata(j,data)
-        #validation variables
-        train_TT=0
-        train_TF=0
-        train_FF=0
-        train_FT=0
-        test_TT=0
-        test_TF=0
-        test_FF=0
-        test_FT=0
         for i in range(len(x_train)):
             y=function(x_train[i],weights,bias,thresold)
             z=y_train[i]
             cost=z-y
-            train_TT,train_TF,train_FF,train_FT=valid(y,cost,train_TT,train_TF,train_FF,train_FT)
+            foldres.valid(y,cost,0)
             weights,thresold,bias=update_weights(weights,x_train[i],thresold,bias,learning_rate,cost)
         for i in range(len(x_test)):
-            y=function(x_test[i],weights,bias,thresold)
+            y=function(x_train[i],weights,bias,thresold)
             z=y_test[i]
             cost=z-y
-            test_TT,test_TF,test_FF,test_FT=valid(y,cost,test_TT,test_TF,test_FF,test_FT)
-        print("trainTT:",train_TT," trainTF:",train_TF," trainFF:",train_FF," trainFT:",train_FT)
-        print("train_accuracy",(train_TT+train_FF)/(train_TT+train_TF+train_FF+train_FT+eps))
-        print("train Precision +:",(train_TT)/(train_TT+train_FT+eps))
-        print("train Precision -:",(train_FF)/(train_FF+train_TF+eps))
-        print("train recall +:",(train_TT)/(train_TT+train_TF+eps))
-        print("train recall -:",(train_FF)/(train_FF+train_FT+eps))
-        print("testTT:",test_TT," testTF:",test_TF," testFF:",test_FF," testFT:",test_FT)
-        print("test_accuracy",(test_TT+test_FF)/(test_TT+test_TF+test_FF+test_FT+eps))
-        print("test Precision +:",(test_TT)/(test_TT+test_FT+eps))
-        print("test Precision -:",(test_FF)/(test_FF+test_TF+eps))
-        print("test recall +:",(test_TT)/(test_TT+test_TF+eps))
-        print("test recall -:",(test_FF)/(test_FF+test_FT+eps))
+            foldres.valid(y,cost,1)
+#         foldres.printfoldresult()
+        foldres.averageresults()
+    if (epoch%1)==0:
+        print("epoch no",epoch+1,"+"*60)
+        foldres.printepochresult()   
 
