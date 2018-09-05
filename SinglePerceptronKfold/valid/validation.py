@@ -30,13 +30,13 @@ class foldwise:
 
         
     def printfoldresult(self):
-        eps=0.001
-        print("trainTT:",self.train_TT," trainTF:",self.train_TF," trainFF:",self.train_FF," trainFT:",self.train_FT)
-        print("train_accuracy",(self.train_TT+self.train_FF)/(self.train_TT+self.train_TF+self.train_FF+self.train_FT+eps))
-        print("train Precision +:",(self.train_TT)/(self.train_TT+self.train_FT+eps))
-        print("train Precision -:",(self.train_FF)/(self.train_FF+self.train_TF+eps))
-        print("train recall +:",(self.train_TT)/(self.train_TT+self.train_TF+eps))
-        print("train recall -:",(self.train_FF)/(self.train_FF+self.train_FT+eps))
+        eps=0
+        # print("trainTT:",self.train_TT," trainTF:",self.train_TF," trainFF:",self.train_FF," trainFT:",self.train_FT)
+        # print("train_accuracy",(self.train_TT+self.train_FF)/(self.train_TT+self.train_TF+self.train_FF+self.train_FT+eps))
+        # print("train Precision +:",(self.train_TT)/(self.train_TT+self.train_FT+eps))
+        # print("train Precision -:",(self.train_FF)/(self.train_FF+self.train_TF+eps))
+        # print("train recall +:",(self.train_TT)/(self.train_TT+self.train_TF+eps))
+        # print("train recall -:",(self.train_FF)/(self.train_FF+self.train_FT+eps))
         print("testTT:",self.test_TT," testTF:",self.test_TF," testFF:",self.test_FF," testFT:",self.test_FT)
         print("test_accuracy",(self.test_TT+self.test_FF)/(self.test_TT+self.test_TF+self.test_FF+self.test_FT+eps))
         print("test Precision +:",(self.test_TT)/(self.test_TT+self.test_FT+eps))
@@ -45,12 +45,12 @@ class foldwise:
         print("test recall -:",(self.test_FF)/(self.test_FF+self.test_FT+eps))
 
     def averageresults(self):
-        eps=0.001
-        self.accTra+=(self.train_TT+self.train_FF)/(self.train_TT+self.train_TF+self.train_FF+self.train_FT+eps)
-        self.precTraPos+=((self.train_TT)/(self.train_TT+self.train_FT+eps))
-        self.precTraNeg+=((self.train_FF)/(self.train_FF+self.train_TF+eps))
-        self.recTraPos+=((self.train_TT)/(self.train_TT+self.train_TF+eps))
-        self.recTraNeg+=((self.train_FF)/(self.train_FF+self.train_FT+eps))
+        eps=0
+        # self.accTra+=(self.train_TT+self.train_FF)/(self.train_TT+self.train_TF+self.train_FF+self.train_FT+eps)
+        # self.precTraPos+=((self.train_TT)/(self.train_TT+self.train_FT+eps))
+        # self.precTraNeg+=((self.train_FF)/(self.train_FF+self.train_TF+eps))
+        # self.recTraPos+=((self.train_TT)/(self.train_TT+self.train_TF+eps))
+        # self.recTraNeg+=((self.train_FF)/(self.train_FF+self.train_FT+eps))
         self.accTes+=((self.test_TT+self.test_FF)/(self.test_TT+self.test_TF+self.test_FF+self.test_FT+eps))
         self.precTesPos+=((self.test_TT)/(self.test_TT+self.test_FT+eps))
         self.precTesNeg+=((self.test_FF)/(self.test_FF+self.test_TF+eps))
@@ -60,15 +60,15 @@ class foldwise:
     def reset(self):
         self.train_TT,self.train_TF,self.train_FF,self.train_FT,self.test_TT,self.test_TF,self.test_FF,self.test_FT=(0 for i in range(8))
         
-    def printepochresult(self):
+    def printaverageresults(self):
         print("average result for ",self.k_fold,"fold")
-        print("Last fold confusion matrix trainTT:",self.train_TT," trainTF:",self.train_TF," trainFF:",self.train_FF," trainFT:",self.train_FT)
-        print("Last fold testTT:",self.test_TT," testTF:",self.test_TF," testFF:",self.test_FF," testFT:",self.test_FT)
-        print("train_accuracy:",self.accTra/self.k_fold)
-        print("train Precision +:",self.precTraPos/self.k_fold)
-        print("train Precision -:",self.precTraNeg/self.k_fold)
-        print("train recall +:",self.recTraPos/self.k_fold)
-        print("train recall -:",self.recTraNeg/self.k_fold)
+        # print("Last fold confusion matrix trainTT:",self.train_TT," trainTF:",self.train_TF," trainFF:",self.train_FF," trainFT:",self.train_FT)
+        # print("Last fold testTT:",self.test_TT," testTF:",self.test_TF," testFF:",self.test_FF," testFT:",self.test_FT)
+        # print("train_accuracy:",self.accTra/self.k_fold)
+        # print("train Precision +:",self.precTraPos/self.k_fold)
+        # print("train Precision -:",self.precTraNeg/self.k_fold)
+        # print("train recall +:",self.recTraPos/self.k_fold)
+        # print("train recall -:",self.recTraNeg/self.k_fold)
         print("test_accuracy",self.accTes/self.k_fold)
         print("test Precision +:",self.precTesPos/self.k_fold)
         print("test Precision -:",self.precTesNeg/self.k_fold)
