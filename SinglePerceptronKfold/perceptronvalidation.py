@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-data=pd.read_csv('SPECT.csv')
+data=pd.read_csv('IRIS.csv')
 X=data.drop(["class"],axis=1)
 Y=data["class"]
 data=np.array(data)
@@ -12,15 +12,15 @@ n_data=len(data)
 
 #Iris-setosa
 for i in range(n_data):
-    if(data[i][n_features]=="Yes"):
+    if(data[i][n_features]=="Iris-setosa"):
         data[i][n_features]=1
     else:
         data[i][n_features]=0
 
 bias=1
 thresold=0.5
-n_epochs=100
-learning_rate=0.1
+n_epochs=10
+learning_rate=0.7
 k_fold=10
 #kfold variables
 width=int(n_data/k_fold)
