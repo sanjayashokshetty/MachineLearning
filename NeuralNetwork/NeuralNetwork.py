@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
-data=pd.read_csv('SPECT.csv')
+data=pd.read_csv('IRIS.csv')
 data=np.array(data)
 np.random.shuffle(data)
 
@@ -11,7 +11,7 @@ n_data=len(data)
 
 #Iris-setosa
 for i in range(n_data):
-    if(data[i][n_features]=="Yes"):
+    if(data[i][n_features]=="Iris-setosa"):
         data[i][n_features]=1
     else:
         data[i][n_features]=0
@@ -19,7 +19,7 @@ for i in range(n_data):
 #variables
 
 thresold=0.5
-n_epochs=1000
+n_epochs=100
 learning_rate=0.3
 k_fold=10
 layer=[n_features,5,1]
