@@ -20,7 +20,7 @@ for i in range(n_data):
 
 thresold=0.5
 n_epochs=1000
-learning_rate=0.5
+learning_rate=0.3
 k_fold=10
 layer=[n_features,5,1]
 bias=[[1/layer[i+1]]*layer[i+1] for i in range(len(layer)-1)]

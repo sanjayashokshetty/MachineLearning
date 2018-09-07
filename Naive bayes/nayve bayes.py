@@ -53,11 +53,11 @@ def kfolddata(j,data):
     return x_train,y_train,x_test,y_test
 
 def function(row,prob_attr_class,num_classes,prob_classes):
-    y_prob=[1 for i in range(n_classes)]
+    y_prob=[prob_classes[i] for i in range(n_classes)]
     for i in range(n_classes):
         for j,k in enumerate(row):
             y_prob[i]*=(prob_attr_class[j][i][k]/num_classes[i])
-        y_prob[i]*=prob_classes[i]
+    # print(y_prob)
     if y_prob[0]>y_prob[1]:
         return 0
     else:
@@ -79,11 +79,12 @@ for fold in range(k_fold):
     #attribute probablility
     for i in range(n_features):
         for j in range(len(x_train)):
-            prob_attr_class[i][y_train[j]][x_train[j][i]]=+1
+            prob_attr_class[i][y_train[j]][x_train[j][i]]=prob_attr_class[i][y_train[j]][x_train[j][i]]+1
     for i in range(len(x_test)):
         y=function(x_test[i],prob_attr_class,num_classes,prob_classes)
         z=y_test[i]
         cost=z-y
+        # print(cost)
         foldres.valid(y,cost,1)
     foldres.printfoldresult()
     foldres.averageresults() 
